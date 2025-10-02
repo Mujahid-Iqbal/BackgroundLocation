@@ -1,23 +1,57 @@
 import Foundation
 import Capacitor
+import CoreLocation
 
-/**
- * Please read the Capacitor iOS Plugin Development Guide
- * here: https://capacitorjs.com/docs/plugins/ios
- */
 @objc(BackgroundLocationPlugin)
-public class BackgroundLocationPlugin: CAPPlugin, CAPBridgedPlugin {
-    public let identifier = "BackgroundLocationPlugin"
-    public let jsName = "BackgroundLocation"
-    public let pluginMethods: [CAPPluginMethod] = [
-        CAPPluginMethod(name: "echo", returnType: CAPPluginReturnPromise)
-    ]
-    private let implementation = BackgroundLocation()
+public class BackgroundLocationPlugin: CAPPlugin, CLLocationManagerDelegate {
+    var locationManager: CLLocationManager?
 
-    @objc func echo(_ call: CAPPluginCall) {
-        let value = call.getString("value") ?? ""
-        call.resolve([
-            "value": implementation.echo(value)
-        ])
+    @objc public override func load() {
+        locationManager = CLLocationManager()
+        locationManager?.delegate = self
+        locationManager?.desiredAccuracy = kCLLocationAccuracyBest
+        locationManager?.distanceFilter = 10
+        locationManager?.allowsBackgroundLocationUpdates = true
+        locationManager?.pausesLocationUpdatesAutomatically = false
+    }
+
+    @objc func startTracking(_ call: CAPPluginCall) {
+        guard let manager = locationManager else {
+            call.reject("LocationManager not initialized")
+            return
+        }
+
+        manager.requestAlwaysAuthorization()
+        manager.startUpdatingLocation()
+
+        print("📡 iOS startTracking called")
+        call.resolve()
+    }
+
+    @objc func stopTracking(_ call: CAPPluginCall) {
+        locationManager?.stopUpdatingLocation()
+        print("🛑 iOS stopTracking called")
+        call.resolve()
+    }
+
+    public func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
+        guard let loc = locations.last else {
+            print("⚠️ No location available")
+            return
+        }
+
+        let data: [String: Any] = [
+            "latitude": loc.coordinate.latitude,
+            "longitude": loc.coordinate.longitude,
+            "accuracy": loc.horizontalAccuracy,
+            "timestamp": loc.timestamp.timeIntervalSince1970
+        ]
+
+        notifyListeners("locationUpdate", data: data)
+        print("📍 iOS Location update sent:", data)
+    }
+
+    public func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
+        print("⚠️ iOS Location error:", error.localizedDescription)
     }
 }

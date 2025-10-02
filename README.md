@@ -13,25 +13,67 @@ npx cap sync
 
 <docgen-index>
 
-* [`echo(...)`](#echo)
+* [`startTracking()`](#starttracking)
+* [`stopTracking()`](#stoptracking)
+* [`addListener('locationUpdate', ...)`](#addlistenerlocationupdate-)
+* [Interfaces](#interfaces)
 
 </docgen-index>
 
 <docgen-api>
 <!--Update the source file JSDoc comments and rerun docgen to update the docs below-->
 
-### echo(...)
+### startTracking()
 
 ```typescript
-echo(options: { value: string; }) => Promise<{ value: string; }>
+startTracking() => Promise<void>
 ```
 
-| Param         | Type                            |
-| ------------- | ------------------------------- |
-| **`options`** | <code>{ value: string; }</code> |
+--------------------
 
-**Returns:** <code>Promise&lt;{ value: string; }&gt;</code>
+
+### stopTracking()
+
+```typescript
+stopTracking() => Promise<void>
+```
 
 --------------------
+
+
+### addListener('locationUpdate', ...)
+
+```typescript
+addListener(eventName: 'locationUpdate', listenerFunc: (data: LocationUpdate) => void) => Promise<PluginListenerHandle>
+```
+
+| Param              | Type                                                                         |
+| ------------------ | ---------------------------------------------------------------------------- |
+| **`eventName`**    | <code>'locationUpdate'</code>                                                |
+| **`listenerFunc`** | <code>(data: <a href="#locationupdate">LocationUpdate</a>) =&gt; void</code> |
+
+**Returns:** <code>Promise&lt;<a href="#pluginlistenerhandle">PluginListenerHandle</a>&gt;</code>
+
+--------------------
+
+
+### Interfaces
+
+
+#### PluginListenerHandle
+
+| Prop         | Type                                      |
+| ------------ | ----------------------------------------- |
+| **`remove`** | <code>() =&gt; Promise&lt;void&gt;</code> |
+
+
+#### LocationUpdate
+
+| Prop            | Type                |
+| --------------- | ------------------- |
+| **`latitude`**  | <code>number</code> |
+| **`longitude`** | <code>number</code> |
+| **`accuracy`**  | <code>number</code> |
+| **`timestamp`** | <code>number</code> |
 
 </docgen-api>
