@@ -1,6 +1,6 @@
 {
   "name": "capacitor-background-location-miq",
-  "version": "0.0.8",
+  "version": "0.0.3",
   "description": "BackgroundLocation is a custom Capacitor 5 plugin that enables accurate background geolocation tracking on both Android and iOS using native APIs. It allows the app to receive continuous location updates even when the app is in the background or terminated, and securely posts the data to a remote server.",
   "main": "dist/plugin.cjs.js",
   "module": "dist/esm/index.js",
@@ -12,8 +12,10 @@
     "dist/",
     "ios/Sources",
     "ios/Tests",
-    "CapacitorBackgroundLocationMiq.podspec",
-    "Package.swift"  ],
+    "ios/CapacitorBackgroundLocationMiq.podspec",
+    "Package.swift",
+    "BackgroundLocation.podspec"
+  ],
   "author": "Mujahid-Iqbal",
   "license": "MIT",
   "repository": {
