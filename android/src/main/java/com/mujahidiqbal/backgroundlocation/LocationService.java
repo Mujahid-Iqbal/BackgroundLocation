@@ -23,8 +23,8 @@ public class LocationService extends Service implements LocationListener {
         try {
             locationManager.requestLocationUpdates(
                 LocationManager.GPS_PROVIDER,
-                5000,
-                5,
+                1000,
+                1,
                 this
             );
         } catch (SecurityException e) {
@@ -40,8 +40,11 @@ public class LocationService extends Service implements LocationListener {
         Intent intent = new Intent("com.mujahidiqbal.backgroundlocation.LOCATION_UPDATE");
         intent.putExtra("latitude", location.getLatitude());
         intent.putExtra("longitude", location.getLongitude());
+        intent.putExtra("accuracy", location.getAccuracy());
+        intent.putExtra("timestamp", location.getTime()); // ms since epoch
         sendBroadcast(intent);
     }
+
 
     @Override
     public void onDestroy() {

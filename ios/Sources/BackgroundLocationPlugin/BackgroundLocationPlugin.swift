@@ -10,7 +10,7 @@ public class BackgroundLocationPlugin: CAPPlugin, CLLocationManagerDelegate {
         locationManager = CLLocationManager()
         locationManager?.delegate = self
         locationManager?.desiredAccuracy = kCLLocationAccuracyBest
-        locationManager?.distanceFilter = 10
+        locationManager?.distanceFilter = 3
         locationManager?.allowsBackgroundLocationUpdates = true
         locationManager?.pausesLocationUpdatesAutomatically = false
     }
